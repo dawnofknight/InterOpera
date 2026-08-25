@@ -1,0 +1,9 @@
+services:
+  demo:
+    build: .
+    working_dir: /app
+    command: ["python", "-m", "interopera.cli", "demo"]
+    environment:
+      INTEROPERA_NARRATIVE_PROVIDER: none
+    volumes:
+      - ./output:/app/output

@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "interopera"
+version = "1.0.0"
+description = "Deterministic graph-traceable fixed-income reporting assessment"
+requires-python = ">=3.12"
+dependencies = [
+  "pydantic==2.13.4",
+  "PyYAML==6.0.3",
+  "openpyxl==3.1.5",
+  "PyMuPDF==1.26.5",
+  "typer==0.23.2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest==8.4.2", "ruff==0.14.10", "mypy==1.19.1"]
+
+[project.scripts]
+interopera = "interopera.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/interopera"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.mypy]
+python_version = "3.12"
+plugins = ["pydantic.mypy"]
+strict = true
+disable_error_code = ["import-untyped"]
+
+[[tool.mypy.overrides]]
+module = ["openpyxl", "openpyxl.*", "yaml", "fitz"]
+ignore_missing_imports = true

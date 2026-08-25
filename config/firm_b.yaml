@@ -1,0 +1,37 @@
+schema_version: "1.0"
+firm_id: firm_b
+display_name: Firm B
+nav: {source: sum_position_market_value, currency: SGD}
+aggregate_non_ig:
+  base_membership:
+    strategy: asset_class_membership
+    asset_classes: ["High Yield Bonds", "Structured Credit"]
+  additions:
+    - strategy: rating_with_transition
+      current_rating_at_or_below: BB+
+      prior_rating_at_or_above: BBB-
+      require_downgraded_from: true
+  deduplicate_by: instrument_id
+concentration:
+  corporate:
+    issuer_types: [corporate]
+    exclude_issuers: ["Singapore Government"]
+    grouping_key: issuer_name
+  gre:
+    issuer_types: [GRE]
+    grouping_key: parent_issuer
+    missing_group_key: error
+liquidity: {condition: normal, bucket_id: "liquidity:normal"}
+utilization:
+  max_or_upper_bound: {formula: actual_divided_by_limit}
+  min_or_lower_bound: {formula: not_applicable}
+  representation: basis_points
+  decimals: 0
+  rounding: ROUND_DOWN
+value_formatting:
+  ratios: {percent_decimals: 1, rounding: ROUND_HALF_UP}
+  duration: {decimals: 2, rounding: ROUND_HALF_UP}
+  currency: {decimals: 0, thousands_separator: true}
+metric_overrides:
+  liquid_assets_ratio: {utilization_formula: floor_coverage}
+
